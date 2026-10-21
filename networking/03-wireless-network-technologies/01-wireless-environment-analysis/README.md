@@ -2,107 +2,90 @@
 
 ## Objective
 
-Inspect the active Wi-Fi connection, identify the wireless adapter's supported standards, and verify local gateway connectivity, Internet reachability, and DNS resolution.
+Inspect the active Wi-Fi connection and adapter capabilities, identify the client's addressing configuration, and verify gateway, Internet, and DNS connectivity.
 
 ## Environment
 
 - Client: Windows 11
-- Connection: Wi-Fi
-- Tools: Command Prompt, `netsh`, `ping`, and `nslookup`
+- Wireless adapter: RZ616 Wi-Fi 6E 160MHz
+- Connection type: Wi-Fi
+- Tools: Windows PowerShell, Command Prompt, and `netsh`
 
-## 1. Active Wi-Fi Interface
+## Methodology
 
-Command:
+The following commands were used:
 
 ```powershell
+Get-NetAdapter -Name "Wi-Fi"
 netsh wlan show interfaces
+netsh wlan show drivers
+Get-NetIPConfiguration -InterfaceAlias "Wi-Fi"
+ipconfig /all
+ping -n 10 192.168.0.1
+ping -n 10 1.1.1.1
+nslookup example.com
+ping -4 -n 10 example.com
 ```
 
-Observed values:
+## Findings
 
-- Radio band: 5 GHz
-- Channel: 128
-- Active radio type: 802.11n
-- Authentication: WPA2-Personal
-- Cipher: CCMP
-- Receive rate: 120 Mbps
-- Transmit rate: 52 Mbps
-- Signal: 45%
-- RSSI: -79 dBm
+### Active Wi-Fi Connection
 
-The connection was operational, although the signal level indicated a relatively weak Wi-Fi signal.
+| Property | Observed value |
+|---|---|
+| Band | 5 GHz |
+| Channel | 128 |
+| Active radio type | 802.11n |
+| Authentication | WPA2-Personal |
+| Cipher | CCMP |
+| Receive link rate | 120 Mbps |
+| Transmit link rate | 52 Mbps |
+| Signal | 45% |
+| RSSI | -79 dBm |
+
+The connection was operational, but the captured signal level was relatively weak.
 
 ![Active Wi-Fi interface](screenshots/01-wifi-interface.png)
 
-## 2. Wireless Adapter Capabilities
+### Adapter Capabilities
 
-Command:
-
-```powershell
-netsh wlan show drivers
-```
-
-The RZ616 Wi-Fi 6E 160MHz adapter reported support for:
-
-- 802.11b/a/g/n/ac/ax
-- 2.4 GHz, 5 GHz, and 6 GHz operation
-- WPA3 security
-- 802.11w management frame protection
-
-The adapter supports newer standards than the 802.11n mode used by the active connection.
+The adapter reported support for 802.11b/a/g/n/ac/ax, the 2.4, 5, and 6 GHz bands, WPA3, and 802.11w management-frame protection. The hardware therefore supported newer standards than the 802.11n mode used by the active connection at the time of the capture.
 
 ![Wireless adapter capabilities](screenshots/02-wifi-driver-capabilities.png)
 
-## 3. Local Gateway Latency
+### Addressing, DHCP, and DNS
 
-Command:
+The Wi-Fi interface used a private IPv4 address in `192.168.0.0/24`. DHCP was enabled, and the local router at `192.168.0.1` acted as the default gateway and DNS resolver.
 
-```powershell
-ping -n 10 192.168.0.1
-```
+![IP, DHCP, and DNS configuration](screenshots/06-ip-dhcp-dns-connectivity.png)
 
-Results:
+### Connectivity Tests
 
-- Packet loss: 0%
-- Minimum latency: 4 ms
-- Maximum latency: 8 ms
-- Average latency: 6 ms
+| Test | Packet loss | Minimum | Average | Maximum | Interpretation |
+|---|---:|---:|---:|---:|---|
+| Local gateway, 10 packets | 0% | 4 ms | 6 ms | 8 ms | Stable local connectivity during the sample |
+| `1.1.1.1`, 10 packets | 0% | 31 ms | 35 ms | 41 ms | Internet routing worked independently of DNS |
+| `example.com` over IPv4, 10 packets | 0% | 15 ms | 18 ms | 26 ms | Name resolution and IPv4 connectivity worked |
 
-This confirmed stable communication between the client and the local gateway during the test.
+An earlier short sample to `example.com` contained a temporary 113 ms delay. The longer ten-packet run did not reproduce it, so it was treated as a transient observation rather than a persistent fault.
 
 ![Gateway latency](screenshots/03-gateway-latency.png)
 
-## 4. Internet Latency
-
-Command:
-
-```powershell
-ping -n 10 1.1.1.1
-```
-
-Results:
-
-- Packet loss: 0%
-- Minimum latency: 31 ms
-- Maximum latency: 41 ms
-- Average latency: 35 ms
-
-The test confirmed IP connectivity beyond the local network.
-
 ![Internet latency](screenshots/04-internet-latency.png)
 
-## 5. DNS Resolution
+![IPv4 Internet connectivity](screenshots/07-ipv4-internet-connectivity.png)
 
-Command:
+### DNS Resolution
 
-```powershell
-nslookup example.com
-```
-
-The DNS resolver successfully returned IPv4 and IPv6 addresses for `example.com`. The message `Server: Unknown` indicated that the resolver address did not have a reverse DNS name; it did not indicate a failed lookup.
+`nslookup` returned both IPv4 and IPv6 records for `example.com`. `Server: Unknown` meant that the resolver address had no reverse-DNS name available; the forward lookup itself succeeded.
 
 ![DNS resolution](screenshots/05-dns-resolution.png)
 
 ## Conclusion
 
-The client had working local and Internet connectivity with no packet loss in the captured tests, and DNS resolution completed successfully. The adapter supports modern Wi-Fi standards and security features, but the active connection used 802.11n and showed a relatively weak signal of 45% (`-79 dBm`). This suggests that signal quality or access-point placement could be investigated if performance becomes inconsistent.
+The client had working DHCP configuration, local-gateway access, Internet reachability, and DNS resolution. No packet loss occurred in the recorded ten-packet tests. The adapter supported modern wireless standards and security features, but the active capture used 802.11n with a weak signal, which justified further channel and band testing in the next lab.
+
+## Privacy
+
+The SSID, BSSID/MAC addresses, adapter identifier, and other identifying values were masked before publication. Private addressing required to explain the local tests was retained.
+
