@@ -1,0 +1,6 @@
+phase,band_ghz,channel,radio_type,signal_percent,rssi_dbm,rx_link_mbps,tx_link_mbps,ping_min_ms,ping_avg_ms,ping_max_ms,packet_loss_percent,internet_download_mbps
+initial_5ghz,5,128,802.11n,66,-77,120,81,5,6,9,0,
+channel_36_test,5,36,802.11ac,63,-74,81,108,4,7,10,0,
+comparison_2.4ghz,2.4,6,802.11n,57,-74,26,58.5,3,139,497,0,16
+restored_5ghz,5,128,802.11ac,66,-68,150,108,4,6,11,0,130
+
