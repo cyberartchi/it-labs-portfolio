@@ -1,0 +1,8 @@
+category,service,protocol,port,source,destination,validation,result,evidence,limitation
+Addressing,DHCP,UDP,"67/68",PC01,DC01,"Get-DhcpServerv4Lease -ScopeId 10.10.10.0","Active lease 10.10.10.100","03-dhcp-lease.png","An active lease does not prove that every future renewal will succeed"
+Name resolution,DNS,"UDP/TCP",53,PC01,DC01,"Get-DnsClientServerAddress; Resolve-DnsName; nslookup SRV","Internal DNS configured and resolution successful","01-dns-client-settings.png; 02-dns-resolution.png","A successful lookup does not validate every DNS zone or record"
+Authentication,Kerberos,"UDP/TCP",88,PC01,DC01,"Test-NetConnection; klist","TCP reachable and Kerberos tickets present","05-port-connectivity.png","Port reachability does not prove that every account is authorized"
+Directory,LDAP,"UDP/TCP",389,PC01,DC01,"nslookup SRV; Test-NetConnection","Domain controller advertised and TCP reachable","02-dns-resolution.png; 05-port-connectivity.png","Does not validate all LDAP queries or permissions"
+File services,SMB,TCP,445,PC01,DC01,"Test-NetConnection","TCP reachable","05-port-connectivity.png","Does not prove share or NTFS authorization"
+Time,NTP/W32Time,UDP,123,PC01,DC01,"w32tm /query /source; w32tm /query /status","DC01 selected as source; no warning","06-time-source.png","A point-in-time result does not prove long-term clock stability"
+Server state,Core Windows services,N/A,N/A,DC01,Local,"Get-Service DNS,DHCPServer,NTDS,W32Time,LanmanServer","Running; Automatic","04-service-status.png","Running state alone does not prove end-to-end client access"
