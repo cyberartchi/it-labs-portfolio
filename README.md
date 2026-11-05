@@ -12,6 +12,7 @@ The purpose of this repository is to turn theoretical knowledge into repeatable 
 2. [Common Ports and Services](networking/02-common-ports-and-services/)
 3. [Wireless Network Technologies](networking/03-wireless-network-technologies/)
 4. [Server Services and Infrastructure Validation](networking/04-server-services-and-infrastructure/)
+5. [DNS Configuration and Analysis](networking/05-dns-configuration-and-analysis/)
 
 More modules will be added as the portfolio develops.
 
