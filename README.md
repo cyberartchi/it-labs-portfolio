@@ -13,6 +13,7 @@ The purpose of this repository is to turn theoretical knowledge into repeatable 
 3. [Wireless Network Technologies](networking/03-wireless-network-technologies/)
 4. [Server Services and Infrastructure Validation](networking/04-server-services-and-infrastructure/)
 5. [DNS Configuration and Analysis](networking/05-dns-configuration-and-analysis/)
+6. [DHCP Address Management and Analysis](networking/06-dhcp-address-management/)
 
 More modules will be added as the portfolio develops.
 
