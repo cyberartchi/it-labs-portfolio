@@ -14,6 +14,7 @@ The purpose of this repository is to turn theoretical knowledge into repeatable 
 4. [Server Services and Infrastructure Validation](networking/04-server-services-and-infrastructure/)
 5. [DNS Configuration and Analysis](networking/05-dns-configuration-and-analysis/)
 6. [DHCP Address Management and Analysis](networking/06-dhcp-address-management/)
+7. [VLAN Segmentation and Guest Network Isolation](networking/07-vlan-segmentation-and-guest-isolation/)
 
 More modules will be added as the portfolio develops.
 
@@ -36,6 +37,7 @@ Individual modules may include:
 - OPNsense
 - Windows Server 2025 with Active Directory Domain Services, DNS, and DHCP
 - Windows 11 domain client
+- Debian Linux containers
 - Windows PowerShell
 - Wireshark
 - Git and GitHub
@@ -45,6 +47,9 @@ Individual modules may include:
 - TCP/IP and UDP traffic analysis
 - DNS query, response, and service-discovery validation
 - DHCP scope, lease, and client troubleshooting
+- IEEE 802.1Q VLAN segmentation and virtual trunk validation
+- Firewall rule ordering and guest network isolation
+- Linux DHCP, DNS, routing, and connectivity validation
 - TCP connection establishment and five-tuple analysis
 - Windows TCP and UDP endpoint inventory
 - Port-to-process and service mapping
