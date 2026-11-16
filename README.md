@@ -15,6 +15,7 @@ The purpose of this repository is to turn theoretical knowledge into repeatable 
 5. [DNS Configuration and Analysis](networking/05-dns-configuration-and-analysis/)
 6. [DHCP Address Management and Analysis](networking/06-dhcp-address-management/)
 7. [VLAN Segmentation and Guest Network Isolation](networking/07-vlan-segmentation-and-guest-isolation/)
+8. [Network Device, Bridge, and Packet Path Analysis](networking/08-network-device-and-bridge-analysis/)
 
 More modules will be added as the portfolio develops.
 
@@ -49,6 +50,8 @@ Individual modules may include:
 - DHCP scope, lease, and client troubleshooting
 - IEEE 802.1Q VLAN segmentation and virtual trunk validation
 - Firewall rule ordering and guest network isolation
+- Linux bridge FDB and neighbor-cache analysis
+- Multi-interface packet capture and NAT boundary validation
 - Linux DHCP, DNS, routing, and connectivity validation
 - TCP connection establishment and five-tuple analysis
 - Windows TCP and UDP endpoint inventory
