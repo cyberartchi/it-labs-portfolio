@@ -138,7 +138,7 @@ The following tests narrowed down the failure:
 
 The evidence shows that OPNsense forwarded and translated the traffic correctly, and that public TCP connectivity worked from both the firewall and VLAN 30. Therefore, failed public pings did not mean that Internet access was down.
 
-Because public ICMP failed from Proxmox, OPNsense, and test01 after the Orange-router firewall had been enabled, upstream ICMP filtering is the leading hypothesis. This remains a hypothesis until an on-site A/B test temporarily changes that firewall setting and repeats the same captures.
+A controlled A/B test was later completed on the Orange router. With its firewall enabled, public ICMP failed from Proxmox; after the firewall was disabled, three consecutive replies were received from `1.1.1.1`. This confirms that the upstream Orange-router firewall, rather than OPNsense routing or VLAN policy, filtered the public ICMP replies.
 
 ## Validation Summary
 
@@ -152,7 +152,7 @@ Because public ICMP failed from Proxmox, OPNsense, and test01 after the Orange-r
 | Neighbor entry for the VLAN gateway interpreted | PASS |
 | Packet traced across LAN, WAN, NAT, and physical NIC | PASS |
 | TCP Internet access from VLAN 30 verified | PASS |
-| Cause of missing public ICMP narrowed to the upstream path | PASS - final A/B confirmation pending |
+| Cause of missing public ICMP confirmed through an upstream firewall A/B test | PASS |
 
 ## Evidence
 
@@ -173,7 +173,7 @@ All published transcripts are sanitized. Hardware addresses are replaced with ro
 - Capturing the same flow on both sides of a firewall reveals where VLAN tags are removed and where NAT changes the source address.
 - A 10 Gb/s virtual adapter does not guarantee 10 Gb/s end-to-end throughput when the physical uplink is negotiated at 100 Mb/s.
 - Ping tests only ICMP. A failed ping must not be treated as proof that DNS, routing, NAT, or TCP Internet access is broken.
-- A conclusion should match the evidence: the Orange-router firewall is the most likely cause of the missing replies, but an A/B test is still required for proof.
+- A controlled A/B test can convert a well-supported hypothesis into a confirmed root cause; disabling the Orange-router firewall restored public ICMP replies.
 
 ## Security and Privacy
 
@@ -181,6 +181,6 @@ The original screenshots were reviewed before publication. Full MAC addresses an
 
 ## Conclusion
 
-The two exercises connected interface inventory, virtual switching, VLAN forwarding, neighbor discovery, routing, NAT, and packet capture into one diagnostic workflow. The lab infrastructure forwarded TCP traffic correctly, while the missing public ICMP replies were localized beyond the OPNsense forwarding path.
+The two exercises connected interface inventory, virtual switching, VLAN forwarding, neighbor discovery, routing, NAT, and packet capture into one diagnostic workflow. The lab infrastructure forwarded TCP traffic correctly, and the follow-up A/B test confirmed that the Orange-router firewall filtered the missing public ICMP replies.
 
 [Back to the main portfolio](../../)

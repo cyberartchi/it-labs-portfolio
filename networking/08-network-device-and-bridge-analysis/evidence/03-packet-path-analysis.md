@@ -81,6 +81,20 @@ Proxmox -> 8.8.8.8: 100% packet loss
 test01 -> 1.1.1.1: 100% packet loss
 ~~~
 
+### Orange-router firewall A/B test
+
+A controlled test changed only the upstream Orange-router firewall state.
+
+~~~text
+Firewall enabled:
+Proxmox -> 1.1.1.1: 100% packet loss
+
+Firewall disabled:
+Proxmox -> 1.1.1.1: 3 packets transmitted, 3 received
+~~~
+
+The restored replies after disabling the firewall confirm that the upstream firewall filtered public ICMP.
+
 ### TCP from OPNsense
 
 ~~~bash
@@ -112,4 +126,4 @@ The observations support the following sequence:
 5. No public ICMP reply returned.
 6. TCP 443 succeeded from OPNsense and test01.
 
-Routing, NAT, DNS, and permitted TCP connectivity were therefore operational. Upstream ICMP filtering, most likely associated with the enabled Orange-router firewall, is the leading explanation. A controlled firewall on/off comparison is still required to prove causation.
+Routing, NAT, DNS, and permitted TCP connectivity were therefore operational. The controlled firewall on/off comparison confirmed that the enabled Orange-router firewall filtered the public ICMP replies.
