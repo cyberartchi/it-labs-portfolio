@@ -16,6 +16,7 @@ The purpose of this repository is to turn theoretical knowledge into repeatable 
 6. [DHCP Address Management and Analysis](networking/06-dhcp-address-management/)
 7. [VLAN Segmentation and Guest Network Isolation](networking/07-vlan-segmentation-and-guest-isolation/)
 8. [Network Device, Bridge, and Packet Path Analysis](networking/08-network-device-and-bridge-analysis/)
+9. [IPv4, IPv6, Routing, and NAT Analysis](networking/09-ipv4-ipv6-routing-and-nat-analysis/)
 
 More modules will be added as the portfolio develops.
 
@@ -52,6 +53,8 @@ Individual modules may include:
 - Firewall rule ordering and guest network isolation
 - Linux bridge FDB and neighbor-cache analysis
 - Multi-interface packet capture and NAT boundary validation
+- IPv4 and IPv6 address and route analysis
+- DNS, TCP, TLS, and link-local IPv6 traffic analysis
 - Linux DHCP, DNS, routing, and connectivity validation
 - TCP connection establishment and five-tuple analysis
 - Windows TCP and UDP endpoint inventory
