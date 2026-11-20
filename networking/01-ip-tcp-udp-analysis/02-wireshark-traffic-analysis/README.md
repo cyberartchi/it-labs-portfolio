@@ -1,222 +1,137 @@
-# \# Wireshark Traffic Analysis
+# Wireshark Traffic Analysis
 
-# 
+## Objective
 
-# \## Objective
+The objective of this exercise was to generate controlled DNS and HTTPS traffic, capture it with Wireshark, and analyze ports, protocol fields, the TCP handshake, encapsulation, and the complete five-tuple of a network flow.
 
-# 
+## Environment
 
-# The objective of this exercise was to generate controlled DNS and HTTPS traffic, capture it with Wireshark, and analyze ports, protocol fields, the TCP handshake, encapsulation, and the complete five-tuple of a network flow.
+* Windows 11
 
-# 
+* Command Prompt
 
-# \## Environment
+* Wireshark
 
-# 
+* Home Wi-Fi network
 
-# \* Windows 11
+## Traffic Generation
 
-# \* Command Prompt
+The DNS cache was cleared and controlled DNS and HTTPS traffic was generated using:
 
-# \* Wireshark
+```powershell
 
-# \* Home Wi-Fi network
+ipconfig /flushdns
 
-# 
+nslookup example.com
 
-# \## Traffic Generation
+curl.exe --http1.1 https://example.com/ -o NUL
 
-# 
+```
 
-# The DNS cache was cleared and controlled DNS and HTTPS traffic was generated using:
+The `--http1.1` option was used to generate HTTPS communication over TCP port 443 rather than HTTP/3 over QUIC and UDP port 443.
 
-# 
+## Wireshark Display Filters
 
-# ```powershell
+The following filters were used during the analysis:
 
-# ipconfig /flushdns
+```text
 
-# nslookup example.com
+dns
 
-# curl.exe --http1.1 https://example.com/ -o NUL
+udp.port == 53
 
-# ```
+tcp.port == 443
 
-# 
+tcp.flags.syn == 1 && tcp.flags.ack == 0
 
-# The `--http1.1` option was used to generate HTTPS communication over TCP port 443 rather than HTTP/3 over QUIC and UDP port 443.
+tcp.stream eq 7
 
-# 
+tcp.analysis.retransmission
 
-# \## Wireshark Display Filters
+```
 
-# 
+The TCP stream number depends on the capture and may be different in another session.
 
-# The following filters were used during the analysis:
+## DNS Query
 
-# 
+The client sent a DNS query from ephemeral UDP source port `64698` to destination port `53` on the DNS resolver.
 
-# ```text
+The query requested an `A` record for `example.com`. An `A` record maps a domain name to an IPv4 address.
 
-# dns
+![DNS query](screenshots/01-dns-query.png)
 
-# udp.port == 53
+## DNS Response
 
-# tcp.port == 443
+The DNS response was sent from UDP port `53` back to client port `64698`. The response contained IPv4 addresses for `example.com`.
 
-# tcp.flags.syn == 1 \&\& tcp.flags.ack == 0
+The query and response used the same transaction ID, `0x0002`, allowing the client and Wireshark to match the response to the correct query.
 
-# tcp.stream eq 7
+UDP does not provide a TCP-style ACK mechanism. Confirmation occurred at the DNS application layer when the matching response was received.
 
-# tcp.analysis.retransmission
+![DNS response](screenshots/02-dns-response.png)
 
-# ```
+## TCP Three-Way Handshake
 
-# 
+The HTTPS connection was established using three TCP packets:
 
-# The TCP stream number depends on the capture and may be different in another session.
+1. `SYN` — the client requested a connection to the server.
 
-# 
+2. `SYN, ACK` — the server acknowledged the request and synchronized its sequence number.
 
-# \## DNS Query
+3. `ACK` — the client acknowledged the server response.
 
-# 
+The client used ephemeral source port `13543`, while the HTTPS server used destination port `443`.
 
-# The client sent a DNS query from ephemeral UDP source port `64698` to destination port `53` on the DNS resolver.
+![TCP three-way handshake](screenshots/03-tcp-handshake.png)
 
-# 
+## Protocol Encapsulation
 
-# The query requested an `A` record for `example.com`. An `A` record maps a domain name to an IPv4 address.
+The captured packet contained several protocol layers:
 
-# 
+| Layer                     | Observed Protocol | Purpose                                             |
 
-# !\[DNS query](screenshots/01-dns-query.png)
+| ------------------------- | ----------------- | --------------------------------------------------- |
 
-# 
+| Data link                 | Ethernet II       | Local frame delivery using MAC addresses            |
 
-# \## DNS Response
+| Network                   | IPv4              | Addressing and routing between hosts                |
 
-# 
+| Transport                 | TCP               | Reliable transport using ports and sequence numbers |
 
-# The DNS response was sent from UDP port `53` back to client port `64698`. The response contained IPv4 addresses for `example.com`.
+| Application communication | TLS               | Encryption of HTTP application data                 |
 
-# 
+The TCP ports and flags remained visible because they were part of the transport header. The HTTP content was not readable because it was protected by TLS encryption.
 
-# The query and response used the same transaction ID, `0x0002`, allowing the client and Wireshark to match the response to the correct query.
+![Protocol layers](screenshots/04-packet-layers.png)
 
-# 
+## TCP Five-Tuple
 
-# UDP does not provide a TCP-style ACK mechanism. Confirmation occurred at the DNS application layer when the matching response was received.
+The analyzed flow was identified using five values:
 
-# 
+| Component              | Observed Value           |
 
-# !\[DNS response](screenshots/02-dns-response.png)
+| ---------------------- | ------------------------ |
 
-# 
+| Transport protocol     | TCP                      |
 
-# \## TCP Three-Way Handshake
+| Source IP address      | Sanitized server address |
 
-# 
+| Source port            | 443                      |
 
-# The HTTPS connection was established using three TCP packets:
+| Destination IP address | Sanitized client address |
 
-# 
+| Destination port       | 13543                    |
 
-# 1\. `SYN` — the client requested a connection to the server.
+Together, these values distinguish the observed communication flow from other simultaneous connections.
 
-# 2\. `SYN, ACK` — the server acknowledged the request and synchronized its sequence number.
+![TCP five-tuple](screenshots/05-five-tuple.png)
 
-# 3\. `ACK` — the client acknowledged the server response.
+## Conclusion
 
-# 
+The exercise demonstrated the difference between connectionless DNS communication over UDP and connection-oriented HTTPS communication over TCP. It also showed how Wireshark links protocol layers and exposes transport metadata even when the application payload is encrypted.
 
-# The client used ephemeral source port `13543`, while the HTTPS server used destination port `443`.
+## Security and Privacy
 
-# 
+The capture contained only controlled traffic generated by the test workstation. Network addresses that could disclose information about the environment were masked where necessary. The packet capture file itself was not published.
 
-# !\[TCP three-way handshake](screenshots/03-tcp-handshake.png)
-
-# 
-
-# \## Protocol Encapsulation
-
-# 
-
-# The captured packet contained several protocol layers:
-
-# 
-
-# | Layer                     | Observed Protocol | Purpose                                             |
-
-# | ------------------------- | ----------------- | --------------------------------------------------- |
-
-# | Data link                 | Ethernet II       | Local frame delivery using MAC addresses            |
-
-# | Network                   | IPv4              | Addressing and routing between hosts                |
-
-# | Transport                 | TCP               | Reliable transport using ports and sequence numbers |
-
-# | Application communication | TLS               | Encryption of HTTP application data                 |
-
-# 
-
-# The TCP ports and flags remained visible because they were part of the transport header. The HTTP content was not readable because it was protected by TLS encryption.
-
-# 
-
-# !\[Protocol layers](screenshots/04-packet-layers.png)
-
-# 
-
-# \## TCP Five-Tuple
-
-# 
-
-# The analyzed flow was identified using five values:
-
-# 
-
-# | Component              | Observed Value           |
-
-# | ---------------------- | ------------------------ |
-
-# | Transport protocol     | TCP                      |
-
-# | Source IP address      | Sanitized server address |
-
-# | Source port            | 443                      |
-
-# | Destination IP address | Sanitized client address |
-
-# | Destination port       | 13543                    |
-
-# 
-
-# Together, these values distinguish the observed communication flow from other simultaneous connections.
-
-# 
-
-# !\[TCP five-tuple](screenshots/05-five-tuple.png)
-
-# 
-
-# \## Conclusion
-
-# 
-
-# The exercise demonstrated the difference between connectionless DNS communication over UDP and connection-oriented HTTPS communication over TCP. It also showed how Wireshark links protocol layers and exposes transport metadata even when the application payload is encrypted.
-
-# 
-
-# \## Security and Privacy
-
-# 
-
-# The capture contained only controlled traffic generated by the test workstation. Network addresses that could disclose information about the environment were masked where necessary. The packet capture file itself was not published.
-
-# 
-
-# \[Back to module](../README.md)
-
-
-
+[Back to module](../README.md)
