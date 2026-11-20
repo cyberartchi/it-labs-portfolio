@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Planned OPNsense dual-WAN design</title>
+  <desc id="desc">A current fixed-line Tier 1 WAN and an independent LTE or 5G Tier 2 WAN connect through separate Proxmox bridges to an OPNsense gateway group, which serves the protected lab network.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="720" fill="#f8fafc"/>
+  <text x="600" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#0f172a">Planned OPNsense Dual-WAN Design</text>
+  <text x="600" y="84" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#475569">Design only — WAN2 was not deployed during this lab</text>
+
+  <g filter="url(#shadow)">
+    <rect x="80" y="135" width="400" height="145" rx="18" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+    <text x="280" y="176" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#1e3a8a">WAN1 — Tier 1</text>
+    <text x="280" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#1e3a8a">Current fixed-line service</text>
+    <text x="280" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#334155">Existing CPE • primary path</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="720" y="135" width="400" height="145" rx="18" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+    <text x="920" y="176" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#14532d">WAN2 — Tier 2</text>
+    <text x="920" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#14532d">Independent LTE/5G service</text>
+    <text x="920" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#334155">Different carrier • backup path</text>
+  </g>
+
+  <line x1="280" y1="280" x2="440" y2="350" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="920" y1="280" x2="760" y2="350" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="305" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#475569">vmbr0 / net1</text>
+  <text x="895" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#475569">dedicated NIC / vmbr2 / net2</text>
+
+  <g filter="url(#shadow)">
+    <rect x="360" y="345" width="480" height="175" rx="20" fill="#fff7ed" stroke="#ea580c" stroke-width="3"/>
+    <text x="600" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="27" font-weight="700" fill="#9a3412">OPNsense FW01</text>
+    <text x="600" y="427" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" fill="#7c2d12">Gateway group: WAN1 Tier 1 / WAN2 Tier 2</text>
+    <text x="600" y="461" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#334155">Trigger: packet loss or high latency</text>
+    <text x="600" y="492" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#475569">Monitoring • NAT • policy routing • stateful firewall</text>
+  </g>
+
+  <line x1="600" y1="520" x2="600" y2="580" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="625" y="558" font-family="Arial, sans-serif" font-size="15" fill="#475569">net0 / vmbr1</text>
+
+  <g filter="url(#shadow)">
+    <rect x="240" y="585" width="720" height="100" rx="18" fill="#f1f5f9" stroke="#475569" stroke-width="3"/>
+    <text x="600" y="625" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#0f172a">Protected Lab Network</text>
+    <text x="600" y="658" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#334155">DC01 • PC01 • Debian test host • isolated VLANs</text>
+  </g>
+</svg>
