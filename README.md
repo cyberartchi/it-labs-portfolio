@@ -70,4 +70,4 @@ Screenshots and command outputs are reviewed before publication. Sensitive infor
 
 ## Status
 
-This repository is continuously expanded with new practical exercises as part of my ongoing IT and cybersecurity development.
+This repository is continuously expanded with new practical exercises as part of my ongoing IT development, with a particular focus on cybersecurity.
