@@ -1,94 +1,61 @@
-# \# IP, TCP, UDP and DNS Analysis
+# IP, TCP, UDP and DNS Analysis
 
-# 
+## Module Overview
 
-# \## Module Overview
+This module documents practical analysis of IP configuration, TCP and UDP communication, DNS traffic, protocol encapsulation, network flows, and basic troubleshooting.
 
-# 
+The exercises were completed on a Windows 11 workstation using PowerShell, Command Prompt, and Wireshark.
 
-# This module documents practical analysis of IP configuration, TCP and UDP communication, DNS traffic, protocol encapsulation, network flows, and basic troubleshooting.
+## Learning Objectives
 
-# 
+* Identify local IP configuration, the default gateway, and DNS servers.
 
-# The exercises were completed on a Windows 11 workstation using PowerShell, Command Prompt, and Wireshark.
+* Understand the role of source and destination ports.
 
-# 
+* Identify Windows ephemeral port ranges.
 
-# \## Learning Objectives
+* Compare UDP-based DNS traffic with TCP-based HTTPS traffic.
 
-# 
+* Recognize the TCP three-way handshake.
 
-# \* Identify local IP configuration, the default gateway, and DNS servers.
+* Identify Ethernet, IP, TCP, UDP, DNS, and TLS layers.
 
-# \* Understand the role of source and destination ports.
+* Describe a network flow using a five-tuple.
 
-# \* Identify Windows ephemeral port ranges.
+* Separate diagnostic facts, hypotheses, and follow-up tests.
 
-# \* Compare UDP-based DNS traffic with TCP-based HTTPS traffic.
+## Practical Exercises
 
-# \* Recognize the TCP three-way handshake.
+| Exercise                      | Status    | Documentation                                      |
 
-# \* Identify Ethernet, IP, TCP, UDP, DNS, and TLS layers.
+| ----------------------------- | --------- | -------------------------------------------------- |
 
-# \* Describe a network flow using a five-tuple.
+| Windows Network Configuration | Completed | [View exercise](01-windows-network-configuration/) |
 
-# \* Separate diagnostic facts, hypotheses, and follow-up tests.
+| Wireshark Traffic Analysis    | Completed | [View exercise](02-wireshark-traffic-analysis/)    |
 
-# 
+| Network Diagnostic Scenarios  | Completed | [View exercise](03-network-diagnostic-scenarios/)  |
 
-# \## Practical Exercises
+## Environment
 
-# 
+* Windows 11
 
-# | Exercise                      | Status    | Documentation                                      |
+* Windows PowerShell
 
-# | ----------------------------- | --------- | -------------------------------------------------- |
+* Command Prompt
 
-# | Windows Network Configuration | Completed | \[View exercise](01-windows-network-configuration/) |
+* Wireshark
 
-# | Wireshark Traffic Analysis    | Completed | \[View exercise](02-wireshark-traffic-analysis/)    |
+* Home Wi-Fi network
 
-# | Network Diagnostic Scenarios  | Completed | \[View exercise](03-network-diagnostic-scenarios/)  |
+## Key Outcomes
 
-# 
+The module demonstrated that an IP address identifies a host or interface, while transport protocols and port numbers identify communication endpoints. DNS queries and responses were matched using the DNS transaction ID, and a TCP connection was traced through the SYN, SYN-ACK, and ACK sequence.
 
-# \## Environment
+Packet inspection also showed that encryption protects application data while network and transport metadata, including IP addresses, ports, and TCP flags, remains visible.
 
-# 
+## Security and Privacy
 
-# \* Windows 11
+Captured traffic was limited to controlled activity generated on the test workstation. Sensitive network information was reviewed and masked where necessary before publication.
 
-# \* Windows PowerShell
-
-# \* Command Prompt
-
-# \* Wireshark
-
-# \* Home Wi-Fi network
-
-# 
-
-# \## Key Outcomes
-
-# 
-
-# The module demonstrated that an IP address identifies a host or interface, while transport protocols and port numbers identify communication endpoints. DNS queries and responses were matched using the DNS transaction ID, and a TCP connection was traced through the SYN, SYN-ACK, and ACK sequence.
-
-# 
-
-# Packet inspection also showed that encryption protects application data while network and transport metadata, including IP addresses, ports, and TCP flags, remains visible.
-
-# 
-
-# \## Security and Privacy
-
-# 
-
-# Captured traffic was limited to controlled activity generated on the test workstation. Sensitive network information was reviewed and masked where necessary before publication.
-
-# 
-
-# \[Back to portfolio](../../README.md)
-
-# 
-
+[Back to portfolio](../../README.md)
