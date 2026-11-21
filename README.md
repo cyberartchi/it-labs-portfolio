@@ -17,6 +17,7 @@ The purpose of this repository is to turn theoretical knowledge into repeatable 
 7. [VLAN Segmentation and Guest Network Isolation](networking/07-vlan-segmentation-and-guest-isolation/)
 8. [Network Device, Bridge, and Packet Path Analysis](networking/08-network-device-and-bridge-analysis/)
 9. [IPv4, IPv6, Routing, and NAT Analysis](networking/09-ipv4-ipv6-routing-and-nat-analysis/)
+10. [WAN Quality, Impairment, and Resilience](networking/10-wan-quality-and-resilience/)
 
 More modules will be added as the portfolio develops.
 
@@ -55,6 +56,9 @@ Individual modules may include:
 - Multi-interface packet capture and NAT boundary validation
 - IPv4 and IPv6 address and route analysis
 - DNS, TCP, TLS, and link-local IPv6 traffic analysis
+- Controlled WAN impairment with Linux `tc netem`
+- Latency, jitter, and packet-loss measurement
+- Dual-WAN failover and rollback design
 - Linux DHCP, DNS, routing, and connectivity validation
 - TCP connection establishment and five-tuple analysis
 - Windows TCP and UDP endpoint inventory
